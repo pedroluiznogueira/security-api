@@ -30,6 +30,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .password(passwordEncoder.encode("cruise"))
                 .authorities("read")
                 .build();
+        System.out.println(user.getPassword());
         userDetailsService.createUser(user);
 
         // telling UserDetailsService about password encoder

@@ -3,6 +3,7 @@ package com.github.pedroluiznogueira.securityapi.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,39 +16,25 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // dependency injection for the bean just created
+    @Lazy
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // customizing AuthenticationManager component
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // AuthenticationProvider component
-
-        // UserDetailsService stored in memory
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-
-        // wich user to UserDetailsService to use
-        UserDetails user = User
-                .withUsername("tom")
-                .password(passwordEncoder.encode("cruise"))
-                .authorities("read")
-                .build();
-        System.out.println(user.getPassword());
+        UserDetails user = User.withUsername("tom").password(passwordEncoder.encode("cruise")).authorities("read").build();
         userDetailsService.createUser(user);
 
-        // telling UserDetailsService about password encoder
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService);
     }
 
-    // wich type of security
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
         http.authorizeRequests().anyRequest().authenticated();
     }
 
-    // password encoder as a bean outside of the manager and provider
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

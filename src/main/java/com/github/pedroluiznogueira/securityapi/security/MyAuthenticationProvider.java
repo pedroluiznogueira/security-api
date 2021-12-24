@@ -16,9 +16,10 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
 
         if (username.equals("tom") && password.equals("cruise")) {
-            // third parameter as a Collection as one of the authorizations
+            // this goes back to manager -> filter -> success handler
             return new UsernamePasswordAuthenticationToken(username, password, Arrays.asList());
         } else {
+            // this goes back to manager -> filter -> failure handler
             throw new BadCredentialsException("Invalid username of password");
         }
     }

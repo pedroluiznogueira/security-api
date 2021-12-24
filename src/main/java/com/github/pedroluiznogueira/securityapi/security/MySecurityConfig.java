@@ -17,5 +17,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     // wich kind of security
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.httpBasic();
+        http.authorizeRequests().anyRequest().authenticated();
     }
 }

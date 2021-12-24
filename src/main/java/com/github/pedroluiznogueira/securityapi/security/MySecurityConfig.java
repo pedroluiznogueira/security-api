@@ -21,7 +21,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         // password enconder
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        // UserDetailsService
+        // UserDetailsService stored in memory
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
 
         // wich user to UserDetailsService to use

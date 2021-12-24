@@ -1,5 +1,6 @@
 package com.github.pedroluiznogueira.securityapi.security;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,6 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 
 import java.util.Arrays;
 
+@Configuration
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
@@ -26,6 +28,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return false;
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }

@@ -16,6 +16,10 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Lazy
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
     private MyAuthenticationProvider authenticationProvider;
 
@@ -27,7 +31,12 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin();
-        http.authorizeRequests().anyRequest().authenticated();
+        http.httpBasic();
+        http.authorizeRequests().antMatchers("/some/hello").authenticated();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

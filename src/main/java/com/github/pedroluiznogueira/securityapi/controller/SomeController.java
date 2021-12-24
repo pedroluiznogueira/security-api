@@ -5,10 +5,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("some")
 public class SomeController {
 
-    @GetMapping("some/endpoint")
-    public String someRequest() {
-        return "Some response";
+    @GetMapping
+    public String defoult() {
+        return "default";
+    }
+
+    @GetMapping("hello")
+    public String hello() {
+        return "hello";
     }
 }

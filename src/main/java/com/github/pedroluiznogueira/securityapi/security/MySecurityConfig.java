@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 // this class has 3 important methods
@@ -17,15 +18,21 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // authentication provider component
 
+        // password enconder
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         // UserDetailsService
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
 
         // wich user to UserDetailsService to use
-        UserDetails user = User.withUsername("tom").password("cruise").build();
+        UserDetails user = User
+                .withUsername("tom")
+                .password(passwordEncoder.encode("cruise"))
+                .build();
         userDetailsService.createUser(user);
 
         // telling UserDetailsService about password encoder
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     // wich type of security

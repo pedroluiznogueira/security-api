@@ -15,7 +15,11 @@ public class MyAuthenticationFilter implements Filter {
             FilterChain chain
     ) throws IOException, ServletException {
         // before logic doFilter() happens when the request goes in
+        System.out.println("Before...");
+
         chain.doFilter(request, response);
+
         // after logic doFilter() happens when the request comes back
+        System.out.println("After...");
     }
 }

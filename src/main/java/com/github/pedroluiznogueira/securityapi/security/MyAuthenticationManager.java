@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 // this class has 3 important methods
 @Configuration
@@ -29,5 +30,7 @@ public class MyAuthenticationManager extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
         http.authorizeRequests().antMatchers("/some/hello").authenticated();
+        // best practice
+        http.addFilterBefore(new MyAuthenticationFilter(), BasicAuthenticationFilter.class);
     }
 }

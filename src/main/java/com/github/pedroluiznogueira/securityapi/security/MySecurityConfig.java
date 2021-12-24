@@ -20,16 +20,13 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MyAuthenticationProvider authenticationProvider;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
-        UserDetails user = User
-                .withUsername("tom")
-                .password(passwordEncoder.encode("cruise"))
-                .authorities("read")
-                .build();
-        userDetailsService.createUser(user);
-        auth.userDetailsService(userDetailsService);
+        // using custom provider component
+        auth.authenticationProvider(authenticationProvider);
     }
 
     @Override

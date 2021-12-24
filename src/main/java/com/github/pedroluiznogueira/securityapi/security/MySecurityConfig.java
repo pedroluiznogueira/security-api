@@ -16,7 +16,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     // customizing AuthenticationManager component
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // authentication provider component
+        // AuthenticationProvider component
 
         // password enconder
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -28,6 +28,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails user = User
                 .withUsername("tom")
                 .password(passwordEncoder.encode("cruise"))
+                .authorities("read")
                 .build();
         userDetailsService.createUser(user);
 

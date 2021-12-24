@@ -1,5 +1,7 @@
 package com.github.pedroluiznogueira.securityapi.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,13 +15,14 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
+    // dependency injection for the bean just created
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     // customizing AuthenticationManager component
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // AuthenticationProvider component
-
-        // password enconder
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         // UserDetailsService stored in memory
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
@@ -42,5 +45,11 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
         http.authorizeRequests().anyRequest().authenticated();
+    }
+
+    // password encoder as a bean outside of the manager and provider
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

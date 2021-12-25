@@ -13,6 +13,7 @@ class SecurityApiApplicationTests {
 	void testPasswordEncoder() {
 		System.out.println(new BCryptPasswordEncoder().encode("password"));
 		System.out.println(new Pbkdf2PasswordEncoder().encode("password"));
+		// way more secure
 		System.out.println(new SCryptPasswordEncoder().encode("password"));
 	}
 }

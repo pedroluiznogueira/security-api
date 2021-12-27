@@ -1,4 +1,4 @@
-package com.github.pedroluiznogueira.securityapi.security;
+package com.github.pedroluiznogueira.securityapi.security.provider;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class MyAuthenticationProvider implements AuthenticationProvider {
+public class AuthProvider implements org.springframework.security.authentication.AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

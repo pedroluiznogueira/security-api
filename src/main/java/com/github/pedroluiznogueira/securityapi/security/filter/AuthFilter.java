@@ -1,4 +1,4 @@
-package com.github.pedroluiznogueira.securityapi.security;
+package com.github.pedroluiznogueira.securityapi.security.filter;
 
 import org.springframework.stereotype.Component;
 
@@ -6,7 +6,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 @Component
-public class MyAuthenticationFilter implements Filter {
+public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(

@@ -25,6 +25,6 @@ class SecurityApiApplicationTests {
 		encoders.put("bcrypt", new BCryptPasswordEncoder());
 		encoders.put("scrypt", new SCryptPasswordEncoder());
 
-		new DelegatingPasswordEncoder("scrypt", encoders).encode("password");
+		System.out.println(new DelegatingPasswordEncoder("scrypt", encoders).encode("password"));
 	}
 }

@@ -1,5 +1,6 @@
 package com.github.pedroluiznogueira.securityapi.security.filter;
 
+import com.github.pedroluiznogueira.securityapi.model.User;
 import com.github.pedroluiznogueira.securityapi.repository.UserRepository;
 import com.github.pedroluiznogueira.securityapi.security.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,49 @@ import java.util.Optional;
 
 public class TokenFilter extends OncePerRequestFilter {
 
-    // accessing request's header
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        String tokenFromHeader = getTokenFromHeader(request);
+        boolean tokenValid = tokenService.isTokenValid(tokenFromHeader);
+        if(tokenValid) {
+            this.authenticate(tokenFromHeader);
+        }
+
+        // after...
+        filterChain.doFilter(request, response);
+        // before...
+    }
+
+    // access user id encrypted in jwt
+
+    private void authenticate(String tokenFromHeader) {
+        // access the id of the token's user
+        Integer id = tokenService.getTokenId(tokenFromHeader);
+
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            // after successfully validating, set it in security context
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+                    = new UsernamePasswordAuthenticationToken(
+                            user,
+                    null,
+                            null);
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        }
+    }
+
+    // access request's header
     private String getTokenFromHeader(HttpServletRequest request) {
 
         // it comes as "Authorization: Bearer token..."
@@ -27,4 +70,5 @@ public class TokenFilter extends OncePerRequestFilter {
         }
         return token.substring(7, token.length());
     }
+
 }

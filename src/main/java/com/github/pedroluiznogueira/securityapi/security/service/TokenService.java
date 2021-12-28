@@ -35,4 +35,20 @@ public class TokenService {
                 .setExpiration(exp).signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
+    // will be used when we intercet a request
+    public boolean isTokenValid(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // will be used when we need to authenticate a given token
+    public Integer getTokenId(String token) {
+        Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Integer.valueOf(body.getSubject());
+    }
+
 }

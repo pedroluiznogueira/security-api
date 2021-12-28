@@ -1,33 +1,30 @@
 package com.github.pedroluiznogueira.securityapi.security.provider;
 
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Component;
+import com.github.pedroluiznogueira.securityapi.model.User;
+import com.github.pedroluiznogueira.securityapi.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+@Service
+public class AuthProvider implements UserDetailsService {
 
-@Component
-public class AuthProvider implements org.springframework.security.authentication.AuthenticationProvider {
+    @Autowired
+    private UserRepository userRepository;
 
+    // will be used by AuthenticationProvider
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByEmail(username);
+        if (user == null) throw new UsernameNotFoundException("User not found for email " + username);
 
-        if (username.equals("tom") && password.equals("cruise")) {
-            // this goes back to manager -> filter -> success handler
-            return new UsernamePasswordAuthenticationToken(username, password, Arrays.asList());
-        } else {
-            // this goes back to manager -> filter -> failure handler
-            throw new BadCredentialsException("Invalid username of password");
-        }
-    }
-
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+        // spring security User
+        return new org.springframework.security.core.userdetails.User(
+                username,
+                user.getPassword(),
+                user.getRoles()
+        );
     }
 }

@@ -20,7 +20,7 @@ public class UserService {
 
     public boolean login(User user) {
         // we need a UserDetails object to create a token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
 
         // manager component verifies user's token

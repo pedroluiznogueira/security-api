@@ -21,10 +21,6 @@ public class AuthProvider implements UserDetailsService {
         if (user == null) throw new UsernameNotFoundException("User not found for email " + username);
 
         // spring security User
-        return new org.springframework.security.core.userdetails.User(
-                username,
-                user.getPassword(),
-                user.getRoles()
-        );
+        return user;
     }
 }

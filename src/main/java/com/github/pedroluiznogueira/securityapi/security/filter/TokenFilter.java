@@ -17,11 +17,13 @@ import java.util.Optional;
 
 public class TokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public TokenFilter(TokenService tokenService, UserRepository repository) {
+        this.tokenService = tokenService;
+        this.userRepository = repository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

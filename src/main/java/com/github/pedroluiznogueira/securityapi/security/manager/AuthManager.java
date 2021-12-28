@@ -1,6 +1,5 @@
 package com.github.pedroluiznogueira.securityapi.security.manager;
 
-import com.github.pedroluiznogueira.securityapi.security.filter.AuthFilter;
 import com.github.pedroluiznogueira.securityapi.security.provider.AuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 // this class has 3 important methods
 @Configuration

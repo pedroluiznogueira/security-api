@@ -35,4 +35,8 @@ public class UserController {
         if (loginResponse) return "index";
         return "login";
     }
+
+    @PostMapping("/auth")
+    public void auth() {
+    }
 }
